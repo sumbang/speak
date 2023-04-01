@@ -1,0 +1,98 @@
+<!-- sidebar: style can be found in sidebar.less -->
+<section class="sidebar" th:fragment="sidebar">
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu" data-widget="tree">
+        <!-- <li class="header"></li> -->
+        <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a></li>
+        <li class="treeview">
+            <a href="#"><i class="fa fa-calendar"></i> <span>Gestion des exercices</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/exercises}"><i class="fa fa-circle-o"></i> Tous les excercices</a></li>
+                <li><a th:href="@{/exercises/add}"><i class="fa fa-circle-o"></i> Ajouter un excercice</a></li>
+                <li><a th:href="@{/eleves/import}"><i class="fa fa-circle-o"></i> Importer les données</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-users"></i> <span>Gestion des élèves</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/eleves}"><i class="fa fa-circle-o"></i> Tous les élèves</a></li>
+                <li><a th:href="@{/eleves/add}"><i class="fa fa-circle-o"></i> Ajouter un élève</a></li>
+            </ul>
+        </li>
+
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-list"></i> <span>Gestion des affectations</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/affectations}"><i class="fa fa-circle-o"></i> Toutes les affectations</a></li>
+                <li><a th:href="@{/affectations/add}"><i class="fa fa-circle-o"></i> Faire les affectations</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-building"></i> <span>Gestion des salles</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/salles}"><i class="fa fa-circle-o"></i> Toutes les salles</a></li>
+                <li><a th:href="@{/salles/add}"><i class="fa fa-circle-o"></i> Ajouter une salle</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-user-secret"></i> <span>Gestion des utilisateurs</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/users}"><i class="fa fa-circle-o"></i> Tous les utilisateurs</a></li>
+                <li><a th:href="@{/users/add}"><i class="fa fa-circle-o"></i> Ajouter un utilisateur</a></li>
+                <li><a th:href="@{/users/enfants/1}"><i class="fa fa-circle-o"></i> Parents d'élèves</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-file"></i> <span>Gestion des Frais</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/frais}"><i class="fa fa-circle-o"></i> Tous les frais</a></li>
+                <li><a th:href="@{/frais/add}"><i class="fa fa-circle-o"></i> Ajouter un frais</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-credit-card"></i> <span>Gestion des paiements</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/users/bill}"><i class="fa fa-circle-o"></i> Tous les paiements</a></li>
+                <li><a th:href="@{/users/addPaiement}"><i class="fa fa-circle-o"></i> Ajouter un paiement</a></li>
+            </ul>
+        </li>
+
+
+    </ul>
+    <!-- /.sidebar-menu -->
+</section>
+<!-- /.sidebar -->

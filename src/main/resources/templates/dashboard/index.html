@@ -1,0 +1,111 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<div layout:fragment="content">
+    My Dashboard <br><br>
+
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${excercise}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>ANNEE SCOLAIRE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${eleves}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>ELEVES INSCRITS</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${salles}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>SALLES OCCUPEES</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${parents}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>PARENTS CONNECTES</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${factures}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>VERSEMENTS ATTENDUS</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${versements}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>VERSEMENTS EFFECTUES</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel" style="background-color:#DEDECD ; color: white">
+                <div class="panel-heading">
+                    <div class="row" align="center">
+                        <h1 style="font-size: 20pt; color: #ffffff" th:text="${taux}"></h1>
+                    </div>
+                </div>
+                <div class="panel-footer" style="text-align: center; color: black">
+                    <span>TAUX DE RECOUVREMENT</span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+</body>
+</html>
