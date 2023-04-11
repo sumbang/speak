@@ -1,0 +1,74 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Audios</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Audios</h1>
+<ol class="breadcrumb">
+    <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Audios</li>
+</ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Lists</h3>
+            <div class="box-tools pull-right">
+                <a th:href="@{add}" type="button" class="btn btn-box-tool"><i class="fa fa-plus"></i></a>
+                <br clear="all" />
+            </div>
+        </div>
+
+        <div class="box-body no-padding">
+            <form data-toggle="validator" role="form" th:object="${search}" th:action="@{/audio/search/1}" method="get">
+            <table class="table table-striped">
+                <tr>
+                    <th>Titre</th>
+                    <th>Catégorie</th>
+                    <th>Langue</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <th><input type="text" class="form-control" th:field="*{title}" id="title" /></th>
+                    <th><select class="form-control" th:field="*{categorie}" id="categorie"><option value="">Tout</option>
+                        <option th:each="eleve1 : ${categories}"
+                                th:value="${eleve1.id}"
+                                th:selected="(${eleve1.id} == ${search.categorie}) ? true : false"
+                                th:text="${eleve1.libelle}">
+                    </select></th>
+                    <th><select class="form-control" th:field="*{langue}" id="langue"><option value="">Tout</option>
+                        <option th:each="eleve1 : ${langues}"
+                                th:value="${eleve1.id}"
+                                th:selected="(${eleve1.id} == ${search.langue}) ? true : false"
+                                th:text="${eleve1.libelle}">
+                    </select></th>
+                    <th> <button class="btn btn-primary" type="submit">Go</button></th>
+                </tr>
+                <tr th:each="row : ${list}">
+                    <td th:text="${row.getTitle()}"></td>
+                    <td th:text="${row.getCategorie().getLibelle()}"></td>
+                    <td th:text="${row.getLangue().getLibelle()}"></td>
+                    <td>
+                        <a th:href="@{'/audio/edit/' + ${row.id}}">Edit</a> |
+                        <a th:href="@{'/audio/delete/' + ${row.id}}">Delete</a>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="/audio/1">First</a></li>
+                <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
+                    <a th:href="@{'/audio/' + ${p}}" th:text="${p}"></a>
+                </li>
+                <li><a th:href="@{'/audio/' + ${endIndex}}">Last</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

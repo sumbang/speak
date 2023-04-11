@@ -1,0 +1,87 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+  <title>Enregistrer un paiement</title>
+</head>
+<body>
+<section layout:fragment="header">
+  <h1>Enregistrer un paiement</h1>
+  <ol class="breadcrumb">
+    <li><a th:href="@{/static}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Enregistrer un paiement</li>
+  </ol>
+</section>
+<div layout:fragment="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Form</h3>
+      <div class="box-tools pull-right">
+        <a th:href="@{/templates/user/bill}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+      </div>
+    </div>
+    <form data-toggle="validator" role="form" th:object="${paiement}" th:action="@{/templates/user/savePaiement}" method="post">
+      <div class="box-body">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+          <label for="excercise">Excercice</label>
+          <select th:field="*{excercise}" id="excercise"  class="form-control"  required="true">
+            <option th:each="exo : ${exercices}"
+                    th:value="${exo.id}"
+                    th:selected="(${exo.id} == ${excercise}) ? true : false"
+                    th:text="${exo.libelleExercise}">
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ElevePaiement">Eleve</label>
+          <select th:field="*{ElevePaiement}" id="ElevePaiement"  class="form-control"  required="true">
+            <option th:each="eleve1 : ${eleves}"
+                    th:value="${eleve1.id}"
+                    th:selected="(${eleve1.id} == ${eleve}) ? true : false"
+                    th:text="${eleve1.nomEleve} +' '+ ${eleve1.prenomEleve}">
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="frais">Frais</label>
+          <select th:field="*{frais}" id="frais"  class="form-control"  required="true">
+            <option th:each="frai : ${fraisx}"
+                    th:value="${frai.id}"
+                    th:selected="(${frai.id} == ${frais}) ? true : false"
+                    th:text="${frai.libelleFrais}+ ' - '+${frai.getSalle().nomSalle}">
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="DatePaiement">Date de paiement</label>
+          <input type="date" required="true" class="form-control" th:field="*{DatePaiement}" id="DatePaiement" />
+        </div>
+        <div class="form-group">
+          <label for="RefInPaiement">Référence du paiement</label>
+          <input type="text" required="true" class="form-control" th:field="*{RefInPaiement}" id="RefInPaiement" />
+        </div>
+
+        <div class="form-group">
+          <label for="MontantPaiement">Montant du paiement</label>
+          <input type="number" required="true" class="form-control" th:field="*{MontantPaiement}" id="MontantPaiement" />
+        </div>
+
+        <div class="form-group">
+          <label for="ModePaiement">Mode de paiement</label>
+          <input type="text" required="true" class="form-control" th:field="*{ModePaiement}" id="ModePaiement" />
+        </div>
+
+      </div>
+      <div class="box-footer">
+        <button class="btn btn-primary" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

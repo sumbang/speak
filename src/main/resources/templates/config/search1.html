@@ -1,0 +1,66 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+  <title>Enfants</title>
+</head>
+<body>
+<section layout:fragment="header">
+  <h1>Enfants</h1>
+  <ol class="breadcrumb">
+    <li><a th:href="@{/static}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Enfants</li>
+  </ol>
+</section>
+<div layout:fragment="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Lists</h3>
+    </div>
+    <div class="box-body no-padding">
+      <form data-toggle="validator" role="form" th:object="${search}" th:action="@{/config/search1/1}" method="get">
+        <table class="table table-striped">
+          <tr>
+            <th>Prénom</th>
+            <th>Parent</th>
+            <th>Date de naissance</th>
+            <th>Sexe</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <th><input type="text" class="form-control" th:field="*{prenom}" id="prenom" /></th>
+            <th><select class="form-control" th:field="*{parent}" id="parent"><option value="">Tout</option>
+              <option th:each="exo : ${users}"
+                      th:value="${exo.id}"
+                      th:selected="(${exo.id} == ${search.parent}) ? true : false"
+                      th:text="${exo.nom}">
+            </select></th>
+            <th><input type="date" class="form-control" th:field="*{datenaiss}" id="datnaiss" /></th>
+            <th><select class="form-control" th:field="*{sexe}" id="sexe"><option value="F">Féminin</option><option value="M">Masculin</option><option value="">Tout</option></select></th>
+            <th> <button class="btn btn-primary" type="submit">Go</button></th>
+          </tr>
+          <tr th:each="row : ${list}">
+            <td th:text="${row.prenom}"></td>
+            <td th:text="${row.user.nom}"></td>
+            <td th:text="${#dates.format(row.datnaiss, 'dd/MM/yyyy')}"></td>
+            <td th:text="${row.sexe}"></td>
+            <td>
+              <a th:href="@{'/config/detail-enfant/' + ${row.id}}">Détails</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="box-footer clearfix">
+      <ul class="pagination pagination-sm no-margin pull-right">
+        <li><a th:href="@{'/config/search1/1' + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()}  }">First</a></li>
+        <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
+          <a th:href="@{'/config/search1/' + ${p} + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()} }" th:text="${p}"></a>
+        </li>
+        <li><a th:href="@{'/config/search1/' + ${endIndex} + + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()} }">Last</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

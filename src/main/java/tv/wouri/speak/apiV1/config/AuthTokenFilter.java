@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tv.wouri.speak.config.Setting;
 import tv.wouri.speak.security.LoginService;
 
 import javax.servlet.FilterChain;
@@ -53,9 +54,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader(SecurityConstants.HEADER_STRING);
+        String headerAuth = request.getHeader(Setting.HEADER_STRING);
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(Setting.TOKEN_PREFIX)) {
             return headerAuth.substring(7, headerAuth.length());
         }
 

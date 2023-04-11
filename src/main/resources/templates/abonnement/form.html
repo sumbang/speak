@@ -1,0 +1,56 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Nouvel abonnement</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Nouvel abonnement</h1>
+    <ol class="breadcrumb">
+        <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Nouvel abonnement</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Form</h3>
+            <div class="box-tools pull-right">
+                <a th:href="@{/abonnement}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+            </div>
+        </div>
+        <form data-toggle="validator" role="form" th:object="${abonnement}" th:action="@{/abonnement/save}" method="post">
+            <div class="box-body">
+                <input type="hidden" th:field="*{id}"/>
+
+                <div class="form-group">
+                    <label for="libelle">Titre</label>
+                    <input type="text" required="true" class="form-control" th:field="*{title}" id="libelle" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea required="true" class="form-control" th:field="*{description}" id="description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Durée (en jours)</label>
+                    <input type="number" required="true" class="form-control" th:field="*{duration}" id="duration" />
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Prix</label>
+                    <input type="text" required="true" class="form-control" th:field="*{price}" id="price" />
+                </div>
+
+
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

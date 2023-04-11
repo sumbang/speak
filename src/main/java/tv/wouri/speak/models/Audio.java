@@ -22,7 +22,7 @@ public class Audio extends AbstractModel<Long>{
     @NotEmpty
     private String title;
     @NotEmpty
-    private String fileName;
+    private String filename;
     private String duration;
     @ManyToOne
     @JoinColumn(name = "langue")
@@ -36,8 +36,4 @@ public class Audio extends AbstractModel<Long>{
     @OneToMany(mappedBy = "audio")
     @JsonIgnore
     private List<Ecoute> ecoutes = new java.util.ArrayList<>();
-    @ToString.Exclude
-    @OneToMany(mappedBy = "examen")
-    @JsonIgnore
-    private List<Question> questions = new java.util.ArrayList<>();
 }

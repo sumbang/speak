@@ -16,7 +16,5 @@ public class AuthentificationResponse {
     private Role role;
     private String userName;
     private Boolean userStatus;
-    private String annee;
-
-
+    private Boolean activated;
 }

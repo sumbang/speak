@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface MyAbonnementRepository  extends JpaRepository<MyAbonnement, Long> {
 
-    @Query(value = "select * from my-abonnement where enfant = ?1 and fin <= ?2", nativeQuery = true)
-    List<MyAbonnement> findByChild(Long enfant,String jour);
+    @Query(value = "select * from myabonnement where payeur = ?1 and fin >= ?2", nativeQuery = true)
+    List<MyAbonnement> findByChild(Long payeur,String jour);
 }

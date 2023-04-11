@@ -22,16 +22,13 @@ import java.util.List;
 public class Categorie  extends AbstractModel<Long> {
 
     private String libelle;
+    private String image;
     @Column(name = "added_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date addedDate;
     @ToString.Exclude
     @OneToMany(mappedBy = "categorie")
     @JsonIgnore
     private List<Audio> audio = new java.util.ArrayList<>();
-    @ToString.Exclude
-    @OneToMany(mappedBy = "categorie")
-    @JsonIgnore
-    private List<Examen> examens = new java.util.ArrayList<>();
     private Boolean visible;
 
 }

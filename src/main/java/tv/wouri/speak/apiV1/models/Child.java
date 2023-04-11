@@ -16,8 +16,8 @@ public class Child {
 
     private String nom;
     private String prenom;
-    private Date datnaiss;
+    private String datnaiss;
     private String sexe;
     private String icone;
-    private Long langue;
+    private String langue;
 }

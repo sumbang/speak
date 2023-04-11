@@ -12,7 +12,7 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @Entity
-@Table(name = "my-abonnement")
+@Table(name = "myabonnement")
 public class MyAbonnement extends AbstractModel<Long> {
 
     @Temporal(TemporalType.DATE)
@@ -23,10 +23,6 @@ public class MyAbonnement extends AbstractModel<Long> {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent
     private Date fin;
-    @ManyToOne
-    @ToString.Exclude
-    @JoinColumn(name = "enfant")
-    private Enfant enfant;
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "abonnement")

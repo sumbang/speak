@@ -25,6 +25,10 @@ public class LoginService implements UserDetailsService {
             throw new EntityNotFoundException("Votre compte est désactivé, veuillez contacter l'administrateur");
         }
 
+        /*else if(!user.getActivated())  {
+            throw new EntityNotFoundException("Votre compte est désactivé, veuillez contacter l'administrateur");
+        }*/
+
         return new Login(user);
     }
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Enregistrer un utilisateur</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Enregistrer un utilisateur</h1>
+    <ol class="breadcrumb">
+        <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Enregistrer un utilisateur</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Form</h3>
+            <div class="box-tools pull-right">
+                <a th:href="@{/templates/user}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+            </div>
+        </div>
+        <form data-toggle="validator" role="form" th:object="${user}" th:action="@{/templates/user/save}" method="post">
+            <div class="box-body">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{country}" />
+
+                <div class="form-group">
+                    <label for="login">Identifiant de connexion</label>
+                    <input type="text" required="true" class="form-control" th:field="*{login}" id="login" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" required="true" class="form-control" th:field="*{password}" id="password" />
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom complet</label>
+                    <input type="text" required="true" class="form-control" th:field="*{nom}" id="nom" />
+                </div>
+                <div class="form-group">
+                    <label for="status">Statut de l'utilisateur</label>
+                    <select th:field="*{status}" id="status"  class="form-control"  required="true">
+                        <option th:value="true" th:text="Actif"></option>
+                        <option th:value="false" th:text="Inactif"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role de l'utilisateur</label>
+                    <select th:field="*{role}" id="role"  class="form-control"  required="true">
+                        <option th:each="role1 : ${roles}"
+                                th:value="${role1.id}"
+                                th:selected="(${role1.id} == ${role}) ? true : false"
+                                th:text="${role1.libelle}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

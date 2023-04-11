@@ -23,7 +23,6 @@ public class PaiementResponse {
     private String ModePaiement;
     private String RecuPaiement;
     private Abonnement abonnement;
-    private Enfant enfant;
     private User payeur;
     private String comment;
 

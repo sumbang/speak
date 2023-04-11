@@ -12,5 +12,4 @@ public interface EnfantRepository extends JpaRepository<Enfant, Long> {
     @Query(value = "select * from enfant where user = ?1 and visible = 1", nativeQuery = true)
     List<Enfant> findByUser (Long userid);
 
-
 }

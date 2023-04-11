@@ -73,7 +73,7 @@ public class Login implements UserDetails {
     }
 
     public String getFullName() {
-        return user.getName();
+        return user.getNom()+" "+user.getPrenom();
     }
 }
 

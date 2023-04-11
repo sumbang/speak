@@ -21,7 +21,7 @@ public class MyAbonnementService extends AbstractService<MyAbonnement, Long> {
         return myAbonnementRepository;
     }
 
-    public List<MyAbonnement> findByChild(Long enfant,String jour){
-        return myAbonnementRepository.findByChild(enfant,jour);
+    public List<MyAbonnement> findByChild(Long payeur,String jour){
+        return myAbonnementRepository.findByChild(payeur,jour);
     }
 }

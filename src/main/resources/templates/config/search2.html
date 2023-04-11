@@ -1,0 +1,72 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+  <title>Paiements</title>
+</head>
+<body>
+<section layout:fragment="header">
+  <h1>Paiements</h1>
+  <ol class="breadcrumb">
+    <li><a th:href="@{/static}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Paiements</li>
+  </ol>
+</section>
+<div layout:fragment="content">
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Lists</h3>
+    </div>
+    <div class="box-body no-padding">
+      <form data-toggle="validator" role="form" th:object="${search}" th:action="@{/config/search2/1}" method="get">
+      <table class="table table-striped">
+          <tr>
+            <th>Date de paiement</th>
+            <th>Référence interne</th>
+            <th>Référence externe</th>
+            <th>Montant du paiement</th>
+            <th>Mode de paiement</th>
+            <th>Payeur</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <th><input type="date" class="form-control" th:field="*{datepaiement}" id="datepaiement" /></th>
+            <th><input type="text" class="form-control" th:field="*{refIn}" id="refIn" /></th>
+            <th><input type="text" class="form-control" th:field="*{refOut}" id="refOut"  /></th>
+            <th><input type="number" class="form-control" th:field="*{montant}" id="montant"  /></th>
+            <th><input type="text" class="form-control" th:field="*{modep}" id="modep"  /></th>
+            <th><select class="form-control" th:field="*{payeur}" id="payeur"><option value="">Tout</option>
+              <option th:each="role : ${users}"
+                      th:value="${role.id}"
+                      th:selected="(${role.id} == ${search.payeur}) ? true : false"
+                      th:text="${role.nom}">
+            </select></th>
+            <th> <button class="btn btn-primary" type="submit">Go</button></th>
+          </tr>
+          <tr th:each="row : ${list}">
+            <td th:text="${#dates.format(row.datePaiement, 'dd/MM/yyyy')}"></td>
+            <td th:text="${row.refInPaiement}"></td>
+            <td th:text="${row.refOutPaiement}"></td>
+            <td th:text="${row.montantPaiement}"></td>
+            <td th:text="${row.modePaiement}"></td>
+            <td th:text="${row.ownerPaiement.nameUser}"></td>
+            <td>
+              <a th:href="@{'/user/detail-paiement/' + ${row.id}}">Détails</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="box-footer clearfix">
+      <ul class="pagination pagination-sm no-margin pull-right">
+        <li><a th:href="@{'/config/search2/1' + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }">First</a></li>
+        <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
+          <a th:href="@{'/config/search2/' + ${p} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }" th:text="${p}"></a>
+        </li>
+        <li><a th:href="@{'/config/search2/' + ${endIndex} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }">Last</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

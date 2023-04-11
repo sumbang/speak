@@ -8,11 +8,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import tv.wouri.speak.apiV1.models.*;
+import tv.wouri.speak.config.EmailDetails;
 import tv.wouri.speak.config.Setting;
 import tv.wouri.speak.models.*;
 import tv.wouri.speak.repositories.EcouteRepository;
 import tv.wouri.speak.service.*;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,7 +46,69 @@ public class DataRestController {
     PaiementService paiementService;
     @Autowired
     MyAbonnementService myAbonnementService;
+    @Autowired
+    EmailService emailService;
 
+    @PutMapping(value = "/activate-account", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> activateCompte(@RequestBody TokenActive tokenActive)  throws Exception {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+
+        int result = -1;
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+        LocalDateTime localDate = LocalDateTime.now();
+        String date = dtf.format(localDate);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+        result = date1.compareTo(user.getActiveTokenExpirationDate());
+
+        if (!user.getActiveToken().equals(tokenActive.getCode())) {
+            return new ResponseEntity<>(new MessageResponse("Code d'activation incorrect"), HttpStatus.BAD_REQUEST);
+        }
+
+       /* else if(result > 0) {
+
+            String ret = "Votre code d'activation est expiré, un nouveau code viens de vous être envoyé par mail. "+dateFormat.format(date1)+ " et "+dateFormat1.format(user.getActiveTokenExpirationDate());
+
+            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+            LocalDateTime localDate1 = LocalDateTime.now().plusHours(Setting.TOKEN_ACTIVATION_TIME);
+            String dat = dtf.format(localDate);
+            Date dat2 =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dat);
+
+            String token = Setting.randomString(8);
+            user.setActiveToken(token);
+            user.setActiveTokenExpirationDate(date1);
+            userService.save(user);
+
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(user.getLogin());
+            emailDetails.setSubject("Activation de votre compte");
+            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez renseigner ce code à votre première connexion : "+token+" \n\rCordialement");
+
+            String retour = emailService.sendSimpleMail(emailDetails);
+
+            return new ResponseEntity<>(new MessageResponse(ret), HttpStatus.BAD_REQUEST);
+
+        } */
+
+        else {
+            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+            LocalDateTime localDate1 = LocalDateTime.now();
+            String dat = dtf.format(localDate);
+            Date dat2 =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dat);
+
+            user.setActiveToken(null);
+            user.setActivedDate(dat2);
+            user.setActivated(true);
+            userService.save(user);
+
+            return new ResponseEntity<>(new MessageResponse("Opération réussie"), HttpStatus.OK);
+        }
+
+    }
     @GetMapping(value = "/enfants", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeEnfants()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -60,16 +124,39 @@ public class DataRestController {
         String jour = formatDate.format(new Date());
 
         enfantList.forEach(enfant -> {
-            List<MyAbonnement> myAbonnements = myAbonnementService.findByChild(enfant.getId(),jour);
+           List<MyAbonnement> myAbonnements = myAbonnementService.findByChild(user.getId(),jour);
             if(myAbonnements.size() != 0) {
                 Access access = new Access();
                 access.setEnfant(enfant);
                 access.setAcces(true);
                 accessList.add(access);
+            } else {
+                Access access = new Access();
+                access.setEnfant(enfant);
+                access.setAcces(false);
+                accessList.add(access);
             }
         });
 
         return new ResponseEntity<>(accessList, HttpStatus.OK);
+    }
+    @GetMapping(value = "/langues", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> listeLangues()  throws Exception {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+        List<Langue> langueList = langueService.getAll();
+        return new ResponseEntity<>(langueList, HttpStatus.OK);
+    }
+    @GetMapping(value = "/sexes", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> listeSexes()  throws Exception {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+        List<Sexe> sexeList = new ArrayList<Sexe>();
+        sexeList.add(new Sexe("F","Fille"));
+        sexeList.add(new Sexe("M","Garçon"));
+        return new ResponseEntity<>(sexeList, HttpStatus.OK);
     }
     @PostMapping(value = "/enfant", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> addEnfant(@RequestBody Child child)  throws Exception {
@@ -77,19 +164,21 @@ public class DataRestController {
                 .getPrincipal();
         User user = userService.findByLogin(userDetails.getUsername());
 
-        if(child.getNom().isEmpty() || child.getIcone().isEmpty() || (child.getDatnaiss() == null) ) {
-            return new ResponseEntity<>(new MessageResponse("Veuillez renseigner le nom, l'icone ainsi que la date de naissance"), HttpStatus.NOT_FOUND);
+        if(child.getPrenom().isEmpty() || child.getIcone().isEmpty() || (child.getDatnaiss() == null) || child.getLangue().isEmpty()  || child.getSexe().isEmpty() ) {
+            return new ResponseEntity<>(new MessageResponse("Veuillez renseigner tous les champs"), HttpStatus.NOT_FOUND);
         }
 
         else {
-            Langue langue = langueService.get(child.getLangue());
+
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(child.getDatnaiss());
+            Langue langue = langueService.get(Long.parseLong(child.getLangue()));
             Enfant enfant = new Enfant();
             enfant.setNom(child.getNom());
             enfant.setPrenom(child.getPrenom());
             enfant.setSexe(child.getSexe());
             enfant.setVisible(true);
             enfant.setIcone(child.getIcone());
-            enfant.setDatnaiss(child.getDatnaiss());
+            enfant.setDatnaiss(date1);
             enfant.setUser(user);
             enfant.setLangue(langue);
             enfantService.save(enfant);
@@ -98,13 +187,13 @@ public class DataRestController {
         }
     }
     @PutMapping(value = "/enfant/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> editEnfant(@PathVariable("id") Long id,@RequestBody Child child)  throws Exception  {
+    public ResponseEntity<?> editEnfant(@PathVariable("id") String id,@RequestBody Child child)  throws Exception  {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User user = userService.findByLogin(userDetails.getUsername());
 
-        Enfant enfant = enfantService.get(id);
+        Enfant enfant = enfantService.get(Long.parseLong(id));
 
         if(enfant == null)  {
             return new ResponseEntity<>(new MessageResponse("Aucune correspondance pour cet enfant"), HttpStatus.NOT_FOUND);
@@ -115,12 +204,13 @@ public class DataRestController {
         }
 
         else {
-            Langue langue = langueService.get(child.getLangue());
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(child.getDatnaiss());
+            Langue langue = langueService.get(Long.parseLong(child.getLangue()));
             enfant.setNom(child.getNom());
             enfant.setPrenom(child.getPrenom());
             enfant.setSexe(child.getSexe());
             enfant.setIcone(child.getIcone());
-            enfant.setDatnaiss(child.getDatnaiss());
+            enfant.setDatnaiss(date1);
             enfant.setUser(user);
             enfant.setLangue(langue);
             enfantService.save(enfant);
@@ -130,14 +220,14 @@ public class DataRestController {
 
     }
     @DeleteMapping(value = "/enfant/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> deleteEnfant(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<?> deleteEnfant(@PathVariable("id") String id) throws Exception {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
         User user = userService.findByLogin(userDetails.getUsername());
 
-        Enfant enfant = enfantService.get(id);
+        Enfant enfant = enfantService.get(Long.parseLong(id));
 
         if(enfant == null)  {
             return new ResponseEntity<>(new MessageResponse("Aucune correspondance pour cet enfant"), HttpStatus.NOT_FOUND);
@@ -156,7 +246,6 @@ public class DataRestController {
         }
 
     }
-
     @GetMapping(value = "/categories", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeCategorie()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -165,14 +254,13 @@ public class DataRestController {
         List<Categorie> categories = categorieService.getAll();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-
     @GetMapping(value = "/audios-categorie/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> listeAudio(@RequestHeader("child") Long child,@PathVariable("id") Long id)  throws Exception {
+    public ResponseEntity<?> listeAudio(@RequestHeader("child") String child,@PathVariable("id") Long id)  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User user = userService.findByLogin(userDetails.getUsername());
 
-        Enfant enfant = enfantService.get(child);
+        Enfant enfant = enfantService.get(Long.parseLong(child));
 
         if(enfant == null)  {
             return new ResponseEntity<>(new MessageResponse("Aucune correspondance pour cet enfant"), HttpStatus.NOT_FOUND);
@@ -201,15 +289,14 @@ public class DataRestController {
         }
 
     }
-
     @PutMapping(value = "/audio-lecture/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> lectureAudio(@RequestHeader("child") Long child,@PathVariable("id") Long id)  throws Exception{
+    public ResponseEntity<?> lectureAudio(@RequestHeader("child") String child,@PathVariable("id") Long id)  throws Exception{
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User user = userService.findByLogin(userDetails.getUsername());
 
-        Enfant enfant = enfantService.get(child);
+        Enfant enfant = enfantService.get(Long.parseLong(child));
         Audio audio = audioService.get(id);
 
         if(enfant == null)  {
@@ -242,7 +329,6 @@ public class DataRestController {
 
         }
     }
-
     @GetMapping(value = "/abonnements", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeAbonnements()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -251,7 +337,6 @@ public class DataRestController {
         List<Abonnement> abonnements = abonnementService.getAll();
         return new ResponseEntity<>(abonnements, HttpStatus.OK);
     }
-
     @PostMapping(value = "/init-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> initPaiement(@RequestBody InitPaiement initPaiementRequest) throws Exception {
 
@@ -262,14 +347,8 @@ public class DataRestController {
 
         Abonnement abonnement = abonnementService.get(initPaiementRequest.getAbonnement());
 
-        Enfant enfant = enfantService.get(initPaiementRequest.getEnfant());
-
         if(abonnement == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Impossible de trouver ce paiement."));
-        }
-
-        else if(enfant == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("mpossible de trouver cet enfant."));
         }
 
         else {
@@ -281,14 +360,13 @@ public class DataRestController {
             String reference = Setting.randomToken();
 
             Paiement paiement = new Paiement();
-            paiement.setEnfant(enfant);
             paiement.setOwnerPaiement(user);
             paiement.setMontantPaiement(abonnement.getPrice());
             paiement.setPayeur(user);
             paiement.setAbonnement(abonnement);
             paiement.setRefInPaiement(reference);
             paiement.setDatePaiement(date1);
-            String input = "{\"enfant\":"+enfant.getNom().toString()+" "+enfant.getPrenom().toString()+",\"abonnement\":"+abonnement.getTitle().toString()+",\"montant\":"+abonnement.getPrice()+",\"reference\":\""+reference+"\",\"date\":\""+date+"\"}";
+            String input = "{\"payeur\":"+user.getNom().toString()+",\"abonnement\":"+abonnement.getTitle().toString()+",\"montant\":"+abonnement.getPrice()+",\"reference\":\""+reference+"\",\"date\":\""+date+"\"}";
             paiement.setInputPaiement(input);
 
             paiementService.save(paiement);
@@ -300,7 +378,6 @@ public class DataRestController {
             paiementResponse.setRecuPaiement(paiement.getRecuPaiement());
             paiementResponse.setRefInPaiement(paiement.getRefInPaiement());
             paiementResponse.setRefOutPaiement(paiement.getRefOutPaiement());
-            paiementResponse.setEnfant(paiement.getEnfant());
             paiementResponse.setAbonnement(paiement.getAbonnement());
             paiementResponse.setPayeur(paiement.getPayeur());
             paiementResponse.setComment("");
@@ -310,7 +387,6 @@ public class DataRestController {
         }
 
     }
-
     @PostMapping(value = "/update-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> updatePaiement(@RequestBody TokenPaiement tokenPaiement) throws Exception {
         Paiement paiement = paiementService.findByRefin(tokenPaiement.getRefIn());
@@ -322,6 +398,28 @@ public class DataRestController {
             paiementService.update(paiement);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Paiement en attente de finalisation"));
         }
+    }
+    @GetMapping(value = "/account", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> myaccount()  throws Exception {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @PutMapping(value = "/account", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> updateAccount(@RequestBody Compte compte)  throws Exception{
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+
+        user.setNom(compte.getNom());
+        user.setPrenom(compte.getPrenom());
+
+        userService.save(user);
+
+        return new ResponseEntity<>(new MessageResponse("Opération réussie"), HttpStatus.OK);
+
     }
 
 }

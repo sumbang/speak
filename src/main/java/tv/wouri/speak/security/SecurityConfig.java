@@ -15,7 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import tv.wouri.speak.apiV1.config.AuthTokenFilter;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 @EnableWebSecurity
@@ -42,15 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/bower_components/**", "/dist/**", "/plugins/**", "/setting/**").permitAll()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/abonnement/**").hasAnyRole("ADMINISTRATEUR")
+                .antMatchers("/categorie/uploads/**").permitAll()
+                .antMatchers("/audio/uploads/**").permitAll()
+                .antMatchers("/setting/**").permitAll()
+                .antMatchers("/categorie/**").hasAnyRole("ADMINISTRATEUR")
                 .antMatchers("/audio/**").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/categorie/**").hasRole("ADMINISTRATEUR")
-                .antMatchers("/ecoute/**").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/enfant/**").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/examen/**").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/users/profil").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/users/save1").hasAnyRole("ADMINISTRATEUR")
-                .antMatchers("/users/**").hasRole("ADMINISTRATEUR")
+                .antMatchers("/abonnement/**").hasRole("ADMINISTRATEUR")
+                .antMatchers("/user/**").hasAnyRole("ADMINISTRATEUR")
+                .antMatchers("/config/**").hasAnyRole("ADMINISTRATEUR")
+                .antMatchers("/user/profil").hasAnyRole("ADMINISTRATEUR")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -87,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
+
 }
 
 

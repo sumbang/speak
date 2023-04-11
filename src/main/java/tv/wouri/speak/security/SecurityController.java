@@ -13,7 +13,6 @@ import java.util.List;
 @Controller
 public class SecurityController {
 
-
     @GetMapping("/accessDenied")
     public String error()
     {

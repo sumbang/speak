@@ -29,6 +29,7 @@ public class Paiement  extends AbstractModel<Long> {
     @JoinColumn(name = "owner_paiement_id_user")
     private User OwnerPaiement;
     private String RecuPaiement;
+    private String status;
     private String InputPaiement;
     private String OutPutPaiement;
     private String DetailPaiement;
@@ -36,10 +37,6 @@ public class Paiement  extends AbstractModel<Long> {
     @ToString.Exclude
     @JoinColumn(name = "payeur")
     private User payeur;
-    @ManyToOne
-    @ToString.Exclude
-    @JoinColumn(name = "enfant")
-    private Enfant enfant;
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "abonnement")

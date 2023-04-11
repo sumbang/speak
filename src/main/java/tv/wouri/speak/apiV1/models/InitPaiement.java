@@ -13,5 +13,4 @@ public class InitPaiement {
 
     private Long parent;
     private Long abonnement;
-    private Long enfant;
 }

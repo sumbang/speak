@@ -14,14 +14,9 @@ import tv.wouri.speak.apiV1.config.JwtUtils;
 import tv.wouri.speak.apiV1.models.*;
 import tv.wouri.speak.config.EmailDetails;
 import tv.wouri.speak.config.Setting;
-import tv.wouri.speak.models.Paiement;
-import tv.wouri.speak.models.Role;
-import tv.wouri.speak.models.User;
+import tv.wouri.speak.models.*;
 import tv.wouri.speak.security.LoginService;
-import tv.wouri.speak.service.EmailService;
-import tv.wouri.speak.service.PaiementService;
-import tv.wouri.speak.service.RoleService;
-import tv.wouri.speak.service.UserService;
+import tv.wouri.speak.service.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -47,7 +42,11 @@ public class AuthRestController {
     @Autowired
     PaiementService paiementService;
     @Autowired
+    MyAbonnementService myAbonnementService;
+    @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    AbonnementService abonnementService;
 
     @PostMapping(value = "/signup", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> create(@RequestBody SignupRequest signupRequest) throws Exception {
@@ -63,7 +62,6 @@ public class AuthRestController {
             Date date1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
 
             String token = Setting.randomString(8);
-            String url = Setting.APPS_URL+"/setting/activate/"+token;
 
             Role role = roleService.get(Long.parseLong(signupRequest.getRole()));
             User user = new User();
@@ -84,7 +82,7 @@ public class AuthRestController {
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(user.getLogin());
             emailDetails.setSubject("Activation de votre compte");
-            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez cliquez sur le lien suivant : "+url+" \n\rCordialement");
+            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez renseigner ce code à votre première connexion : "+token+" \n\rCordialement");
 
              String retour = emailService.sendSimpleMail(emailDetails);
 
@@ -110,15 +108,6 @@ public class AuthRestController {
             return new ResponseEntity<>(new MessageResponse("Identifiant ou mot de passe incorrect "), HttpStatus.BAD_REQUEST);
         }
 
-        else  if(!user.getStatus()) {
-            return new ResponseEntity<>(new MessageResponse("Votre compte est suspendu, bien vouloir vous rapprocher des administrateur"), HttpStatus.FORBIDDEN);
-        }
-
-
-        else  if(!user.getActivated()) {
-            return new ResponseEntity<>(new MessageResponse("Votre compte est inactif, bien vouloir vous rapprocher des administrateur"), HttpStatus.FORBIDDEN);
-        }
-
         else if(user.getRole().getId() != 1) {
 
             return new ResponseEntity<>(new MessageResponse("Votre profil n'est aps autorisé pour cette connexion"), HttpStatus.UNAUTHORIZED);
@@ -137,7 +126,7 @@ public class AuthRestController {
 
             user.setAuthToken(token); userService.update(user);
 
-            return ResponseEntity.status(HttpStatus.OK).body(new AuthentificationResponse(token,user.getRole(),user.getNom()+" "+user.getPrenom(),user.getStatus(), ""));
+            return ResponseEntity.status(HttpStatus.OK).body(new AuthentificationResponse(token,user.getRole(),user.getNom()+" "+user.getPrenom(),user.getStatus(), user.getActivated()));
 
         }
 
@@ -241,7 +230,6 @@ public class AuthRestController {
 
     }
 
-
     @PostMapping(value = "/end-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> endPaiement(@RequestBody EndPaiement endPaiement) throws Exception{
         Paiement paiement = paiementService.findByRefOut(endPaiement.getTransactionRef());
@@ -249,13 +237,38 @@ public class AuthRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Impossible de trouver ce paiement."));
         }
         else {
+
             paiement.setModePaiement(endPaiement.getModePaiement());
             paiement.setOutPutPaiement(endPaiement.getJsonRetour());
             paiement.setRefOutPaiement(endPaiement.getOperatorRef());
             paiement.setDetailPaiement(endPaiement.getStatus());
             paiementService.update(paiement);
 
-            // envoi du mail de confirmation de paiement
+            Abonnement abonnement = abonnementService.get(paiement.getAbonnement().getId());
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+            LocalDateTime localDate = LocalDateTime.now();
+            String date = dtf.format(localDate);
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+
+            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+            LocalDateTime localDate1 = LocalDateTime.now().plusDays(abonnement.getDuration());
+            String dat = dtf1.format(localDate1);
+            Date dat1 = new SimpleDateFormat("yyyy-MM-dd").parse(dat);
+
+            MyAbonnement myAbonnement = new MyAbonnement();
+            myAbonnement.setDebut(date1);
+            myAbonnement.setFin(dat1);
+            myAbonnement.setAbonnement(abonnement);
+            myAbonnement.setPayeur(paiement.getPayeur());
+            myAbonnementService.save(myAbonnement);
+
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(paiement.getPayeur().getLogin());
+            emailDetails.setSubject("Paiement de votre abonnement");
+            emailDetails.setMsgBody("Bonjour "+paiement.getPayeur().getNom()+" "+paiement.getPayeur().getPrenom()+",\n\rVous venez de faire un paiement pour l'abonnement <b>"+ abonnement.getTitle() +"</b> d'une valeur de "+ abonnement.getPrice() +" Euros pour votre abonnement.\n\rL'abonnement est déjà disponible dans votre compte, votre référence de paiement est : "+paiement.getRefOutPaiement()+" \n\rCordialement");
+
+             emailService.sendSimpleMail(emailDetails);
 
             return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Opération terminée."));
         }
