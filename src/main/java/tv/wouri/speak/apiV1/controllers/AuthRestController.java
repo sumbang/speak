@@ -232,7 +232,7 @@ public class AuthRestController {
 
     @PutMapping(value = "/end-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> endPaiement(@RequestBody EndPaiement endPaiement) throws Exception{
-        Paiement paiement = paiementService.findByRefOut(endPaiement.getTransactionRef());
+        Paiement paiement = paiementService.findByRefin(endPaiement.getOperatorRef());
         if(paiement == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Impossible de trouver ce paiement."));
         }
@@ -240,7 +240,7 @@ public class AuthRestController {
 
             paiement.setModePaiement(endPaiement.getModePaiement());
             paiement.setOutPutPaiement(endPaiement.getJsonRetour());
-            paiement.setRefOutPaiement(endPaiement.getOperatorRef());
+            paiement.setRefOutPaiement(endPaiement.getTransactionRef());
             paiement.setStatus(endPaiement.getStatus());
             paiement.setDetailPaiement(endPaiement.getJsonRetour());
             paiementService.update(paiement);
