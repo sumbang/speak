@@ -230,7 +230,7 @@ public class AuthRestController {
 
     }
 
-    @PostMapping(value = "/end-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/end-paiement", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> endPaiement(@RequestBody EndPaiement endPaiement) throws Exception{
         Paiement paiement = paiementService.findByRefOut(endPaiement.getTransactionRef());
         if(paiement == null) {
