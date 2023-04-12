@@ -71,8 +71,7 @@ public class CategorieController {
 
         model.addAttribute("categorie", categorieService.get(id));
         String url = MvcUriComponentsBuilder
-                .fromMethodName(AudioController.class, "getFile", categorieService.get(id).getImage().toString()).build().toString();
-
+                .fromMethodName(CategorieController.class, "getFile", categorieService.get(id).getImage().toString()).build().toString();
         model.addAttribute("url", url);
 
         return "categorie/form1";
