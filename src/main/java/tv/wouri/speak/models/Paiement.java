@@ -29,7 +29,7 @@ public class Paiement  extends AbstractModel<Long> {
     @JoinColumn(name = "owner_paiement_id_user")
     private User OwnerPaiement;
     private String RecuPaiement;
-    private String status;
+    private int status;
     private String InputPaiement;
     private String OutPutPaiement;
     private String DetailPaiement;

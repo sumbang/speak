@@ -163,7 +163,7 @@ public class SettingController {
 
                     String refOut = uuid.toString()+"@@"+jsonObject1.getString("id");
                     paiement.setModePaiement("PAYPAL");
-                    paiement.setStatus("PENDING");
+                    paiement.setStatus(0);
                     paiement.setRefOutPaiement(refOut);
                     paiementService.save(paiement);
                     String url = "";
