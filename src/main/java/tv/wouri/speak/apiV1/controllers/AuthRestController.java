@@ -242,6 +242,7 @@ public class AuthRestController {
             paiement.setOutPutPaiement(endPaiement.getJsonRetour());
             paiement.setRefOutPaiement(endPaiement.getOperatorRef());
             paiement.setStatus(endPaiement.getStatus());
+            paiement.setDetailPaiement(endPaiement.getJsonRetour());
             paiementService.update(paiement);
 
             Abonnement abonnement = abonnementService.get(paiement.getAbonnement().getId());
