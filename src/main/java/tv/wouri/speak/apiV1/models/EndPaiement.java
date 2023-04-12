@@ -16,6 +16,6 @@ public class EndPaiement {
     private String transactionRef;
     private String jsonRetour;
     private String modePaiement;
-    private String status;
+    private int status;
 
 }
