@@ -23,7 +23,8 @@ public class Setting {
     public static final String APPLICATION_JSON_UTF8_VALUE = "application/json;charset=UTF-8";
 
     //public static final String APPS_URL = "http://185.163.126.213:8080/sygem";
-    public static final String APPS_URL = "http://127.0.0.1:8080/speak";
+    //public static final String APPS_URL = "http://127.0.0.1:8080/speak";
+    public static final String APPS_URL = "http://82.165.184.161:8084/";
 
     public static String randomToken() {
         int leftLimit = 48; // numeral '0'
