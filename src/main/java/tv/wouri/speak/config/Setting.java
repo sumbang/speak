@@ -8,7 +8,7 @@ public class Setting {
 
     public static int PAGE_SIZE = 100;
 
-    public static String appName = "Ghomala";
+    public static String appName = "Bantou";
 
     public static final String SECRET = "SygemAppsForEmployeConge2022ApplicationWebAndMobile";
     public static final long EXPIRATION_TIME = 1000 * 60 * 60 * 30; // 30 days
