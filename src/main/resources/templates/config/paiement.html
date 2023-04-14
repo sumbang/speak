@@ -49,7 +49,7 @@
                     <td th:text="${row.refOutPaiement}"></td>
                     <td th:text="${row.montantPaiement}"></td>
                     <td th:text="${row.modePaiement}"></td>
-                    <td th:text="${row.ownerPaiement.nameUser}"></td>
+                    <td th:text="${row.ownerPaiement.nom}"></td>
                     <td>
                         <a th:href="@{'/user/detail-paiement/' + ${row.id}}">Delete</a>
                     </td>
