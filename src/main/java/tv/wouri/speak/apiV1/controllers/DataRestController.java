@@ -422,4 +422,32 @@ public class DataRestController {
 
     }
 
+    @PostMapping(value = "/ecouter", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> addEcoute(@RequestBody Ecouter ecouter)  throws Exception{
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User user = userService.findByLogin(userDetails.getUsername());
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+        LocalDate localDate = LocalDate.now();
+        String date = dtf.format(localDate);
+        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(date);
+
+        Enfant enfant = enfantService.get(Long.parseLong(ecouter.getEnfant()));
+        Audio audio = audioService.get(Long.parseLong(ecouter.getAudio()));
+
+        Ecoute ecoute = new Ecoute();
+        ecoute.setEnfant(enfant);
+        ecoute.setAudio(audio);
+        ecoute.setStatut(true);
+        ecoute.setDateEcoute(date1);
+        ecouteService.save(ecoute);
+
+        return new ResponseEntity<>(new MessageResponse("Opération réussie"), HttpStatus.OK);
+
+    }
+
+
+
 }
