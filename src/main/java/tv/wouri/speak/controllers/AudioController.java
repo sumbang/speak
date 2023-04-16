@@ -135,7 +135,9 @@ public class AudioController {
         String url = MvcUriComponentsBuilder
                 .fromMethodName(AudioController.class, "getFile", audioService.get(id).getFilename().toString()).build().toString();
 
-        model.addAttribute("url", url);
+        String lien = url.replace("http://localhost:8084","https://bantou.wouri.tv");
+
+        model.addAttribute("url", lien);
 
         return "audio/form1";
     }
