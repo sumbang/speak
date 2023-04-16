@@ -15,4 +15,7 @@ public interface EcouteRepository extends JpaRepository<Ecoute, Long> {
     @Query(value = "select * from ecoute where audio = ?1 and enfant = ?2", nativeQuery = true)
     List<Ecoute> findByAudioChild(Long audio, Long enfant);
 
+    @Query(value = "delete from ecoute where enfant = ?1 and audio = ?2", nativeQuery = true)
+    void deleteByEnfantAudio (Long enfant,Long audio);
+
 }
