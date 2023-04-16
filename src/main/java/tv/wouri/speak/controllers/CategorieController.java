@@ -72,7 +72,10 @@ public class CategorieController {
         model.addAttribute("categorie", categorieService.get(id));
         String url = MvcUriComponentsBuilder
                 .fromMethodName(CategorieController.class, "getFile", categorieService.get(id).getImage().toString()).build().toString();
-        model.addAttribute("url", url);
+
+        String lien = url.replace("http://localhost:8084","https://bantou.wouri.tv");
+
+        model.addAttribute("url", lien);
 
         return "categorie/form1";
 
