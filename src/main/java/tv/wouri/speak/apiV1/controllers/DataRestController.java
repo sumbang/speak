@@ -445,7 +445,7 @@ public class DataRestController {
             });
         }*/
 
-        ecouteService.deleteByEnfantAudio(enfant.getId(), audio.getId());
+       // ecouteService.deleteByEnfantAudio(enfant.getId(), audio.getId());
 
         Ecoute ecoute = new Ecoute();
         ecoute.setEnfant(enfant);
