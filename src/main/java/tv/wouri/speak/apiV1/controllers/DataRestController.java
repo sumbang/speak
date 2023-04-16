@@ -437,6 +437,14 @@ public class DataRestController {
         Enfant enfant = enfantService.get(Long.parseLong(ecouter.getEnfant()));
         Audio audio = audioService.get(Long.parseLong(ecouter.getAudio()));
 
+        List<Ecoute> ecoutes = ecouteService.findByAudioChild(audio.getId(),enfant.getId());
+
+        if(ecoutes.size() != 0) {
+            ecoutes.forEach(item -> {
+                ecouteService.delete(item.getId());
+            });
+        }
+
         Ecoute ecoute = new Ecoute();
         ecoute.setEnfant(enfant);
         ecoute.setAudio(audio);
