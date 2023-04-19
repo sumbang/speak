@@ -20,7 +20,7 @@
         <a th:href="@{/users}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
       </div>
     </div>
-    <form data-toggle="validator" role="form" th:object="${user}" th:action="@{/users/save1}" method="post">
+    <form data-toggle="validator" role="form" th:object="${user}" th:action="@{/user/save1}" method="post">
       <div class="box-body">
         <input type="hidden" th:field="*{id}"/>
         <input type="hidden" th:field="*{country}" />
