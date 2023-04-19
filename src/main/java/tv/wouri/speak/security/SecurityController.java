@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import tv.wouri.speak.models.*;
+import tv.wouri.speak.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,17 @@ import java.util.List;
 
 @Controller
 public class SecurityController {
+
+    @Autowired
+    AudioService audioService;
+    @Autowired
+    EnfantService enfantService;
+    @Autowired
+    EcouteService ecouteService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    PaiementService paiementService;
 
     @GetMapping("/accessDenied")
     public String error()
@@ -28,49 +41,23 @@ public class SecurityController {
     @GetMapping("/")
     public String index(Model model){
 
-       /* Excercise excercise = exerciceService.findByLast();
-        List<Affectation> eleveList = affectationService.findBYear(excercise.getId());
-        List<Salle> salleList = new ArrayList<Salle>();
-        List<User> parentList = new ArrayList<User>();
-        List<Enfant> enfantList = enfantService.findByYear(excercise.getId());
-        List<Frais> fraisList = fraisService.findByYear(excercise.getId());
-        List<Paiement> paiementList = paiementService.findByYear(excercise.getId());
-
-        final int[] impayes = new int[1];
+        List<Audio> audioList = audioService.getAll();
+        List<Enfant> enfantList = enfantService.getAll();
+        List<Ecoute> ecouteList = ecouteService.getAll();
+        List<User> userList = userService.findByRole(Long.parseLong("1"));
+        List<Paiement> paiements = paiementService.findByStatus(1);
         final int[] versement = new int[1];
-
-        eleveList.forEach(item ->{
-            if (!salleList.contains(item.getSalle())) salleList.add(item.getSalle());
+        paiements.forEach(paiement -> {
+            int valeur = paiement.getMontantPaiement().intValue();
+            versement[0]+= valeur;
         });
 
-        enfantList.forEach(item -> {
-            if(!parentList.contains(item.getUser())) parentList.add(item.getUser());
-        });
-
-        fraisList.forEach(item -> {
-            int valeur = item.getFraisMontant().intValue();
-            List<Affectation> eleves = affectationService.findBYSalleear(item.getSalle().getId(),excercise.getId());
-            impayes[0]+= valeur * eleves.size();
-        });
-
-        paiementList.forEach(item -> {
-            if(item.getRefOutPaiement() != null) {
-                int valeur = item.getMontantPaiement().intValue();
-                versement[0]+= valeur;
-            }
-        });
-
-        double taux = 0.0;
-
-        if(impayes[0] >0 ) taux = (versement[0] / impayes[0]) * 100;
-
-        model.addAttribute("excercise", excercise.getLibelleExercise());
-        model.addAttribute("eleves", eleveList.size()+"");
-        model.addAttribute("salles", salleList.size()+"");
-        model.addAttribute("parents", parentList.size()+"");
-        model.addAttribute("factures", impayes[0]+"");
+        model.addAttribute("audio", audioList.size()+"");
+        model.addAttribute("enfants", enfantList.size()+"");
+        model.addAttribute("lecture", ecouteList.size()+"");
+        model.addAttribute("parents",userList.size()+"");
         model.addAttribute("versements", versement[0]+"");
-        model.addAttribute("taux", taux+""); */
+        model.addAttribute("taux", "0");
         return "dashboard/index";
     }
 
