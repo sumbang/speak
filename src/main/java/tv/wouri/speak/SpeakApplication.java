@@ -1,5 +1,6 @@
 package tv.wouri.speak;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import tv.wouri.speak.service.FilesStorageService;
 import javax.annotation.Resource;
 
 @SpringBootApplication
+@EnableEncryptableProperties
 @EnableConfigurationProperties
 @EntityScan(basePackages = {"tv.wouri.speak.models"})
 @EnableJpaRepositories(basePackages = {"tv.wouri.speak.repositories"})
