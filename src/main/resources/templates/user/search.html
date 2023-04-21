@@ -38,19 +38,19 @@
               <option th:each="role : ${roles}"
                       th:value="${role.id}"
                       th:selected="(${role.id} == ${search.role}) ? true : false"
-                      th:text="${role.libelleRole}">
+                      th:text="${role.libelle}">
             </select></th>
             <th><input type="date" class="form-control" th:field="*{dateadded}" id="dateadded" /></th>
             <th> <button class="btn btn-primary" type="submit">Go</button></th>
           </tr>
           <tr th:each="row : ${list}">
-            <td th:text="${row.loginUser}"></td>
-            <td th:text="${row.nameUser}"></td>
-            <td th:text="${row.role.libelleRole}"></td>
+            <td th:text="${row.login}"></td>
+            <td th:text="${row.nom}"></td>
+            <td th:text="${row.role.libelle}"></td>
             <td th:text="${#dates.format(row.addedDate, 'dd/MM/yyyy')}"></td>
             <td>
-              <a th:href="@{'/users/edit/' + ${row.id}}">Edit</a> |
-              <a th:href="@{'/users/delete/' + ${row.id}}">Delete</a>
+              <a th:href="@{'/user/edit/' + ${row.id}}">Edit</a> |
+              <a th:href="@{'/user/delete/' + ${row.id}}">Delete</a>
             </td>
           </tr>
         </table>
@@ -58,11 +58,11 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a th:href="@{'/users/search/1' + '?nom=' + ${search.getNom()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} +'&sexe=' + ${search.getSexe()}  }">First</a></li>
+        <li><a th:href="@{'/user/search/1' + '?nom=' + ${search.getNom()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} +'&sexe=' + ${search.getSexe()}  }">First</a></li>
         <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-          <a th:href="@{'/users/search/' + ${p} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }" th:text="${p}"></a>
+          <a th:href="@{'/user/search/' + ${p} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }" th:text="${p}"></a>
         </li>
-        <li><a th:href="@{'/users/search/' + ${endIndex} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }">Last</a></li>
+        <li><a th:href="@{'/user/search/' + ${endIndex} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }">Last</a></li>
       </ul>
     </div>
   </div>
