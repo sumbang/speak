@@ -82,7 +82,7 @@ public class AuthRestController {
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(user.getLogin());
             emailDetails.setSubject("Activation de votre compte");
-            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez renseigner ce code à votre première connexion : "+token+" \n\rCordialement");
+            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez renseigner ce code à votre première connexion : "+token+" \n\rPar ailleurs, pour vos divers paiement bien vouloir utiliser le lien de paiement suivant : https://bantou.wouri.tv/setting/paiement \n\rCordialement");
 
              String retour = emailService.sendSimpleMail(emailDetails);
 

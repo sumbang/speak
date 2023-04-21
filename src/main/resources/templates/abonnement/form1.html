@@ -1,0 +1,62 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Nouvel abonnement utilisateur</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>Nouvel abonnement utilisateur</h1>
+    <ol class="breadcrumb">
+        <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Nouvel abonnement utilisateur</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Form</h3>
+            <div class="box-tools pull-right">
+                <a th:href="@{/abonnement}" type="button" class="btn btn-box-tool"><i class="fa fa-list-ul"></i></a>
+            </div>
+        </div>
+        <form data-toggle="validator" role="form" th:object="${paiement}" th:action="@{/abonnement/save1}" method="post">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" required="true" class="form-control" th:field="*{email}" id="email" />
+                </div>
+
+                <div class="form-group">
+                    <label for="abonnement">Abonnement</label>
+                    <select th:field="*{abonnement}" id="abonnement"  class="form-control"  required="true">
+                        <option th:each="abo : ${abonnements}"
+                                th:value="${abo.id}"
+                                th:text="${abo.title}+ ' - ' + ${abo.price}+' Euros'">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modep">Mode de paiement</label>
+                    <select th:field="*{modep}" id="modep"  class="form-control"  required="true">
+                        <option th:value="PAYPAL" th:text="PAYPAL"></option>
+                         <option th:value="ESPECE" th:text="ESPECE"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="refOut">Référence de transaction</label>
+                    <input type="text" required="true" class="form-control" th:field="*{refOut}" id="refOut" />
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
