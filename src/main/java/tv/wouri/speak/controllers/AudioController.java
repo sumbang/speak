@@ -89,8 +89,8 @@ public class AudioController {
         if(categorie.isPresent()) search.setCategorie(categorie.get());
 
         Pageable pageable = PageRequest.of(pageNumber - 1, Setting.PAGE_SIZE, Sort.by("id").descending());
-       // Page<Audio> page = audioService.searchEleve(search, pageable);
-        Page<Audio> page =  audioService.getList(pageNumber);
+        Page<Audio> page = audioService.searchAudio(search, pageable);
+        //Page<Audio> page =  audioService.getList(pageNumber);
 
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);

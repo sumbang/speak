@@ -72,8 +72,8 @@ public class UserController {
         if(dateadded.isPresent()) search.setDateadded(dateadded.get());
 
         Pageable pageable = PageRequest.of(pageNumber - 1, Setting.PAGE_SIZE, Sort.by("id").descending());
-       // Page<User> page = userService.searchUser(search, pageable);
-        Page<User> page = userService.getList(pageNumber);
+        Page<User> page = userService.searchUser(search, pageable);
+        //Page<User> page = userService.getList(pageNumber);
 
         int current = page.getNumber() + 1;
         int begin = Math.max(1, current - 5);
