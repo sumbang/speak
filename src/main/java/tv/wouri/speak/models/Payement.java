@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class Payement {
     private String email;
     private Long abonnement;
-    private String modep
+    private String modep;
     private String refOut;
 }
