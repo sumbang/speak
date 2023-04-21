@@ -84,6 +84,8 @@ public class UserController {
 
 
         List<Role> roles = roleService.getAll();
+        if(search.getNom() == null) search.setNom("");
+        if(search.getLogin() == null) search.setLogin("");
 
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);

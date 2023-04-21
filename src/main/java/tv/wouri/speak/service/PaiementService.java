@@ -38,17 +38,17 @@ public class PaiementService extends AbstractService<Paiement, Long> {
 
     public Page<Paiement> searchUser(PaiementSearch search, Pageable pageable) {
 
-        if(!search.getDatepaiement().isEmpty() && !search.getRefIn().isEmpty() && !search.getRefOut().isEmpty()  && search.getMontant() != null && !search.getModep().isEmpty()  && search.getPayeur() != null)  return paiementRepository.searchUser(search.getDatepaiement(),search.getRefIn(), search.getRefOut(), search.getMontant(), search.getModep(), search.getPayeur(),pageable);
+        if(search.getDatepaiement()!= null && search.getRefIn()!= null && search.getRefOut()!= null  && search.getMontant() != null && search.getModep()!= null  && search.getPayeur() != null)  return paiementRepository.searchUser(search.getDatepaiement(),search.getRefIn(), search.getRefOut(), search.getMontant(), search.getModep(), search.getPayeur(),pageable);
 
-        else if(!search.getDatepaiement().isEmpty() && search.getRefIn().isEmpty() && search.getRefOut().isEmpty()  && search.getMontant() == null && search.getModep().isEmpty()  && search.getPayeur() == null)  return paiementRepository.searchUserDate(search.getDatepaiement(),pageable);
+        else if(search.getDatepaiement()!= null && search.getRefIn()== null && search.getRefOut()== null  && search.getMontant() == null && search.getModep()== null  && search.getPayeur() == null)  return paiementRepository.searchUserDate(search.getDatepaiement(),pageable);
 
-        else if(search.getDatepaiement().isEmpty() && !search.getRefIn().isEmpty() && search.getRefOut().isEmpty()  && search.getMontant() == null && search.getModep().isEmpty()  && search.getPayeur() == null)  return paiementRepository.searchUserIn(search.getRefIn(),pageable);
+        else if(search.getDatepaiement()== null && search.getRefIn()!= null && search.getRefOut()== null  && search.getMontant() == null && search.getModep()== null  && search.getPayeur() == null)  return paiementRepository.searchUserIn(search.getRefIn(),pageable);
 
-        else if(search.getDatepaiement().isEmpty() && search.getRefIn().isEmpty() && !search.getRefOut().isEmpty()  && search.getMontant() == null && search.getModep().isEmpty()  && search.getPayeur() == null)  return paiementRepository.searchUserOut(search.getRefOut(), pageable);
+        else if(search.getDatepaiement()== null && search.getRefIn()== null && search.getRefOut()!= null  && search.getMontant() == null && search.getModep()== null  && search.getPayeur() == null)  return paiementRepository.searchUserOut(search.getRefOut(), pageable);
 
-        else if(search.getDatepaiement().isEmpty() && search.getRefIn().isEmpty() && search.getRefOut().isEmpty()  && search.getMontant() != null && search.getModep().isEmpty()  && search.getPayeur() == null)  return paiementRepository.searchUserMode(search.getModep(), pageable);
+        else if(search.getDatepaiement()== null && search.getRefIn()== null && search.getRefOut()== null  && search.getMontant() == null && search.getModep()!= null  && search.getPayeur() == null)  return paiementRepository.searchUserMode(search.getModep(), pageable);
 
-        else if(search.getDatepaiement().isEmpty() && search.getRefIn().isEmpty() && search.getRefOut().isEmpty() && search.getMontant() == null && search.getModep().isEmpty()  && search.getPayeur() != null)  return paiementRepository.searchUserPayeur(search.getPayeur(),pageable);
+        else if(search.getDatepaiement()== null && search.getRefIn()== null && search.getRefOut()== null && search.getMontant() == null && search.getModep()== null  && search.getPayeur() != null)  return paiementRepository.searchUserPayeur(search.getPayeur(),pageable);
 
         else return paiementRepository.searchAll(pageable);
     }

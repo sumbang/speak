@@ -33,23 +33,23 @@ public class EnfantService extends AbstractService<Enfant, Long> {
 
     public Page<Enfant> searchEnfant(EnfantSearch search, Pageable pageable) {
 
-        if(!search.getPrenom().isEmpty() && search.getParent() != null && !search.getSexe().isEmpty() && !search.getDatenaiss().isEmpty())  return enfantRepository.findByAll(search.getPrenom(),search.getParent(), search.getDatenaiss(), search.getSexe(),pageable);
+        if(search.getPrenom()!= null && search.getParent() != null && search.getSexe()!= null && search.getDatenaiss()!= null)  return enfantRepository.findByAll(search.getPrenom(),search.getParent(), search.getDatenaiss(), search.getSexe(),pageable);
 
-        else if(!search.getPrenom().isEmpty() && search.getParent() != null && search.getSexe().isEmpty() && !search.getDatenaiss().isEmpty())  return enfantRepository.findByAllNoSexe(search.getPrenom(),search.getParent(), search.getDatenaiss(),pageable);
+        else if(search.getPrenom()!= null && search.getParent() != null && search.getSexe() == null && search.getDatenaiss()!= null)  return enfantRepository.findByAllNoSexe(search.getPrenom(),search.getParent(), search.getDatenaiss(),pageable);
 
-        else if(!search.getPrenom().isEmpty() && search.getParent() != null && !search.getSexe().isEmpty() && search.getDatenaiss().isEmpty())  return enfantRepository.findByAllNoDatnaiss(search.getPrenom(),search.getParent(), search.getSexe(),pageable);
+        else if(search.getPrenom()!= null && search.getParent() != null && search.getSexe()!= null && search.getDatenaiss()== null)  return enfantRepository.findByAllNoDatnaiss(search.getPrenom(),search.getParent(), search.getSexe(),pageable);
 
-        else if(!search.getPrenom().isEmpty() && search.getParent() == null && !search.getSexe().isEmpty() && !search.getDatenaiss().isEmpty())  return enfantRepository.findByAllNoParent(search.getPrenom(), search.getDatenaiss(), search.getSexe(),pageable);
+        else if(search.getPrenom()!= null && search.getParent() == null && search.getSexe()!= null && search.getDatenaiss()!= null)  return enfantRepository.findByAllNoParent(search.getPrenom(), search.getDatenaiss(), search.getSexe(),pageable);
 
-        else if(search.getPrenom().isEmpty() && search.getParent() != null && !search.getSexe().isEmpty() && !search.getDatenaiss().isEmpty())  return enfantRepository.findByAllNoPrenom(search.getParent(), search.getDatenaiss(), search.getSexe(),pageable);
+        else if(search.getPrenom()== null && search.getParent() != null && search.getSexe()!= null && search.getDatenaiss()!= null)  return enfantRepository.findByAllNoPrenom(search.getParent(), search.getDatenaiss(), search.getSexe(),pageable);
 
-       else if(!search.getPrenom().isEmpty() && search.getParent() == null && search.getSexe().isEmpty() && search.getDatenaiss().isEmpty())  return enfantRepository.findByAllPrenom(search.getPrenom(),pageable);
+       else if(search.getPrenom()!= null && search.getParent() == null && search.getSexe()== null && search.getDatenaiss()== null)  return enfantRepository.findByAllPrenom(search.getPrenom(),pageable);
 
-       else if(search.getPrenom().isEmpty() && search.getParent() != null && search.getSexe().isEmpty() && search.getDatenaiss().isEmpty())  return enfantRepository.findByAllParent(search.getParent(),pageable);
+       else if(search.getPrenom()== null && search.getParent() != null && search.getSexe()== null && search.getDatenaiss()== null)  return enfantRepository.findByAllParent(search.getParent(),pageable);
 
-       else if(search.getPrenom().isEmpty() && search.getParent() == null && !search.getSexe().isEmpty() && search.getDatenaiss().isEmpty())  return enfantRepository.findByAllSexe(search.getSexe(),pageable);
+       else if(search.getPrenom()== null && search.getParent() == null && search.getSexe()!= null && search.getDatenaiss()== null)  return enfantRepository.findByAllSexe(search.getSexe(),pageable);
 
-        else if(search.getPrenom().isEmpty() && search.getParent() == null && search.getSexe().isEmpty() && !search.getDatenaiss().isEmpty())  return enfantRepository.findByAllDatnaiss(search.getDatenaiss(),pageable);
+        else if(search.getPrenom()== null && search.getParent() == null && search.getSexe()== null && search.getDatenaiss()!= null)  return enfantRepository.findByAllDatnaiss(search.getDatenaiss(),pageable);
 
         else return enfantRepository.findByAllEmpty(pageable);
     }

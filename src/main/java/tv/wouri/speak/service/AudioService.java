@@ -37,25 +37,25 @@ public class AudioService extends AbstractService<Audio, Long> {
 
     public Page<Audio> searchAudio(AudioSearch search, Pageable pageable) {
 
-        if (!search.getTitle().isEmpty() && search.getCategorie() != null && search.getLangue() != null)
+        if (search.getTitle()!= null && search.getCategorie() != null && search.getLangue() != null)
             return audioRepository.findByAll(search.getCategorie(), search.getLangue(), search.getTitle(), pageable);
 
-        else if (search.getTitle().isEmpty() && search.getCategorie() != null && search.getLangue() != null)
+        else if (search.getTitle()== null && search.getCategorie() != null && search.getLangue() != null)
             return audioRepository.findByCategoriLangue(search.getCategorie(), search.getLangue(), pageable);
 
-        else if (!search.getTitle().isEmpty() && search.getCategorie() == null && search.getLangue() != null)
+        else if (search.getTitle()!= null && search.getCategorie() == null && search.getLangue() != null)
             return audioRepository.findByLangueTitle(search.getLangue(), search.getTitle(), pageable);
 
-        else if (!search.getTitle().isEmpty() && search.getCategorie() != null && search.getLangue() == null)
+        else if (search.getTitle()!= null && search.getCategorie() != null && search.getLangue() == null)
             return audioRepository.findByCategorieTitle(search.getCategorie(),search.getTitle(), pageable);
 
-        else if (!search.getTitle().isEmpty() && search.getCategorie() == null && search.getLangue() == null)
+        else if (search.getTitle()!= null && search.getCategorie() == null && search.getLangue() == null)
             return audioRepository.findByTitle(search.getTitle(), pageable);
 
-        else if (search.getTitle().isEmpty() && search.getCategorie() != null && search.getLangue() == null)
+        else if (search.getTitle()== null && search.getCategorie() != null && search.getLangue() == null)
             return audioRepository.findByCategori(search.getCategorie(), pageable);
 
-        else if (search.getTitle().isEmpty() && search.getCategorie() == null && search.getLangue() != null)
+        else if (search.getTitle()== null && search.getCategorie() == null && search.getLangue() != null)
             return audioRepository.findByLangue(search.getLangue(), pageable);
 
         else return audioRepository.findByAllEmpty(pageable);

@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="box-body no-padding">
-      <form data-toggle="validator" role="form" th:object="${search}" th:action="@{/templates/user/search/1}" method="get">
+      <form data-toggle="validator" role="form" th:object="${search}" th:action="@{/user/search/1}" method="get">
         <table class="table table-striped">
           <tr>
             <th>Identifiant</th>
@@ -58,11 +58,11 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a th:href="@{'/user/search/1' + '?nom=' + ${search.getNom()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} +'&sexe=' + ${search.getSexe()}  }">First</a></li>
+        <li><a th:href="@{'/user/search/1' + '?nom=' + ${search.getNom()}  +'&role=' + ${search.getRole() == null ? '' : search.getRole()}  +'&dateadded=' + ${search.getDateadded()} +'&login =' + ${search.getLogin()}  }">First</a></li>
         <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-          <a th:href="@{'/user/search/' + ${p} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }" th:text="${p}"></a>
+          <a th:href="@{'/user/search/' + ${p} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole() == null ? '' : search.getRole() }  +'&dateadded=' + ${search.getDateadded()} }" th:text="${p}"></a>
         </li>
-        <li><a th:href="@{'/user/search/' + ${endIndex} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }">Last</a></li>
+        <li><a th:href="@{'/user/search/' + ${endIndex} + '?login=' + ${search.getLogin()} +'&nom=' + ${search.getNom()} +'&role=' + ${search.getRole() == null ? '' : search.getRole()}  +'&dateadded=' + ${search.getDateadded()} }">Last</a></li>
       </ul>
     </div>
   </div>

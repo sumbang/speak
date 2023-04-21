@@ -53,11 +53,11 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a th:href="@{'/config/search1/1' + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()}  }">First</a></li>
+        <li><a th:href="@{'/config/search1/1' + '?prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent() == null?'' : search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe() == null ? '' : search.getSexe()}  }">First</a></li>
         <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-          <a th:href="@{'/config/search1/' + ${p} + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()} }" th:text="${p}"></a>
+          <a th:href="@{'/config/search1/' + ${p} + '?prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent() == null?'' : search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe() == null ? '' : search.getSexe()} }" th:text="${p}"></a>
         </li>
-        <li><a th:href="@{'/config/search1/' + ${endIndex} + + '?nom=' + ${search.getNom()} +'&prenom=' + ${search.getPrenom()} +'&parent=' + ${search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe()} }">Last</a></li>
+        <li><a th:href="@{'/config/search1/' + ${endIndex} +  '?prenom=' + ${search.getPrenom()}  +'&parent=' + ${search.getParent() == null?'' : search.getParent()}  +'&datenaiss=' + ${search.getDatenaiss()} +'&sexe=' + ${search.getSexe() == null ? '' : search.getSexe()} }">Last</a></li>
       </ul>
     </div>
   </div>

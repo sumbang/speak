@@ -99,6 +99,8 @@ public class AudioController {
         List<Categorie> categorieList = categorieService.getAll();
         List<Langue> langueList = langueService.getAll();
 
+        if(search.getTitle() == null) search.setTitle("");
+
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);

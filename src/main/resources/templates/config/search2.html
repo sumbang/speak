@@ -49,7 +49,7 @@
             <td th:text="${row.refOutPaiement}"></td>
             <td th:text="${row.montantPaiement}"></td>
             <td th:text="${row.modePaiement}"></td>
-            <td th:text="${row.ownerPaiement.nameUser}"></td>
+            <td th:text="${row.ownerPaiement.nom}"></td>
             <td>
               <a th:href="@{'/user/detail-paiement/' + ${row.id}}">Détails</a>
             </td>
@@ -59,11 +59,11 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a th:href="@{'/config/search2/1' + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }">First</a></li>
+        <li><a th:href="@{'/config/search2/1' + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant() == null ? '': search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur() == null ? '' : search.getPayeur()} }">First</a></li>
         <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-          <a th:href="@{'/config/search2/' + ${p} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }" th:text="${p}"></a>
+          <a th:href="@{'/config/search2/' + ${p} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant() == null ? '': search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur() == null ? '' : search.getPayeur()} }" th:text="${p}"></a>
         </li>
-        <li><a th:href="@{'/config/search2/' + ${endIndex} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant()} +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur()} }">Last</a></li>
+        <li><a th:href="@{'/config/search2/' + ${endIndex} + '?datepaiement=' + ${search.getDatepaiement()} +'&refIn=' + ${search.getRefIn()} +'&refOut=' + ${search.getRefOut()}  +'&montant=' + ${search.getMontant() == null ? '': search.getMontant() } +'&modep=' + ${search.getModep()}  +'&payeur=' + ${search.getPayeur() == null ? '' : search.getPayeur()} }">Last</a></li>
       </ul>
     </div>
   </div>

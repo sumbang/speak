@@ -79,6 +79,7 @@ public class ConfigController {
         int end = Math.min(begin + 10, page.getTotalPages());
 
         List<User> users = userService.getAll();
+        if(search.getPrenom() == null) search.setPrenom("");
 
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
@@ -132,6 +133,10 @@ public class ConfigController {
         int end = Math.min(begin + 10, page.getTotalPages());
 
         List<User> users = userService.getAll();
+
+        if(search.getRefIn() == null) search.setRefIn("");
+        if(search.getRefOut() == null) search.setRefOut("");
+        if(search.getModep() == null) search.setModep("");
 
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);

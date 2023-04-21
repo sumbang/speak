@@ -61,11 +61,11 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a th:href="@{'/audio/search/1' + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue()} +'&categorie=' + ${search.getCategorie()} }">First</a></li>
+        <li><a th:href="@{'/audio/search/1' + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue() == null ? '' :search.getLangue()} +'&categorie=' + ${search.getCategorie() == null ? '' : search.getCategorie()} }">First</a></li>
         <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-          <a th:href="@{'/audio/search/' + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue()} +'&categorie=' + ${search.getCategorie()} }" th:text="${p}"></a>
+          <a th:href="@{'/audio/search/' + ${p} + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue() == null ? '' :search.getLangue()} +'&categorie=' + ${search.getCategorie() == null ? '' : search.getCategorie()} }" th:text="${p}"></a>
         </li>
-        <li><a th:href="@{'/audio/search/' + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue()} +'&categorie=' + ${search.getCategorie()} }">Last</a></li>
+        <li><a th:href="@{'/audio/search/' + ${endIndex} + '?title=' + ${search.getTitle()} +'&langue=' + ${search.getLangue() == null ? '' :search.getLangue() } +'&categorie=' + ${search.getCategorie() == null ? '' : search.getCategorie()} }">Last</a></li>
       </ul>
     </div>
   </div>

@@ -47,10 +47,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select * from user where login like %?1% ", nativeQuery = true)
     Page<User> findByAllEmail (String email, Pageable pageable);
 
-    @Query(value = "select * from user where login like %?1%", nativeQuery = true)
+    @Query(value = "select * from user where nom like %?1%", nativeQuery = true)
     Page<User> findByAllNom (String nom, Pageable pageable);
 
-    @Query(value = "select * from user where nom like %?1% ", nativeQuery = true)
+    @Query(value = "select * from user where role_id_role =?1 ", nativeQuery = true)
     Page<User> findByAllRole (Long role, Pageable pageable);
 
     @Query(value = "select * from user where added_date like %?4%", nativeQuery = true)

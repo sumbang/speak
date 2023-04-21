@@ -42,35 +42,35 @@ public class UserService extends AbstractService<User, Long> {
 
     public Page<User> searchUser(UserSearch search, Pageable pageable) {
 
-        if(!search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() != null && !search.getDateadded().isEmpty())  return userRepository.findByAll(search.getLogin(),search.getNom(), search.getRole(), search.getDateadded(),pageable);
+        if(search.getLogin() != null && search.getNom()!= null && search.getRole() != null && search.getDateadded()!= null)  return userRepository.findByAll(search.getLogin(),search.getNom(), search.getRole(), search.getDateadded(),pageable);
 
-        else if(!search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() != null && search.getDateadded().isEmpty())  return userRepository.findByAllNoDate(search.getLogin(),search.getNom(), search.getRole(),pageable);
+        else if(search.getLogin()!= null && search.getNom()!= null && search.getRole() != null && search.getDateadded()== null)  return userRepository.findByAllNoDate(search.getLogin(),search.getNom(), search.getRole(),pageable);
 
-        else if(!search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() == null && !search.getDateadded().isEmpty())  return userRepository.findByAllNoRole(search.getLogin(),search.getNom(), search.getDateadded(),pageable);
+        else if(search.getLogin()!= null && search.getNom()!= null && search.getRole() == null && search.getDateadded()!= null)  return userRepository.findByAllNoRole(search.getLogin(),search.getNom(), search.getDateadded(),pageable);
 
-        else if(!search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() != null && !search.getDateadded().isEmpty())  return userRepository.findByAllNoNom(search.getLogin(), search.getRole(), search.getDateadded(),pageable);
+        else if(search.getLogin()!= null && search.getNom()== null && search.getRole() != null && search.getDateadded()!= null)  return userRepository.findByAllNoNom(search.getLogin(), search.getRole(), search.getDateadded(),pageable);
 
-        else if(search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() != null && !search.getDateadded().isEmpty())  return userRepository.findByAllNoEmail(search.getNom(), search.getRole(), search.getDateadded(),pageable);
+        else if(search.getLogin()== null && search.getNom()!= null && search.getRole() != null && search.getDateadded()!= null)  return userRepository.findByAllNoEmail(search.getNom(), search.getRole(), search.getDateadded(),pageable);
 
-        else if(!search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() == null && search.getDateadded().isEmpty())  return userRepository.findByAllEmailNom(search.getLogin(),search.getNom(),pageable);
+        else if(search.getLogin()!= null && search.getNom()!= null && search.getRole() == null && search.getDateadded() == null)  return userRepository.findByAllEmailNom(search.getLogin(),search.getNom(),pageable);
 
-        else  if(!search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() != null && search.getDateadded().isEmpty())  return userRepository.findByAllEmailRole(search.getLogin(), search.getRole(),pageable);
+        else  if(search.getLogin()!= null && search.getNom()== null && search.getRole() != null && search.getDateadded()== null)  return userRepository.findByAllEmailRole(search.getLogin(), search.getRole(),pageable);
 
-        else if(!search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() == null && !search.getDateadded().isEmpty())  return userRepository.findByAllEmailDate(search.getLogin(), search.getDateadded(),pageable);
+        else if(search.getLogin()!= null && search.getNom()== null && search.getRole() == null && search.getDateadded()!= null)  return userRepository.findByAllEmailDate(search.getLogin(), search.getDateadded(),pageable);
 
-        else if(search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() != null && search.getDateadded().isEmpty())  return userRepository.findByAllNomRole(search.getNom(), search.getRole(), pageable);
+        else if(search.getLogin()== null && search.getNom()!= null && search.getRole() != null && search.getDateadded()== null)  return userRepository.findByAllNomRole(search.getNom(), search.getRole(), pageable);
 
-        else if(search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() == null && !search.getDateadded().isEmpty())  return userRepository.findByAllNomDate(search.getNom(),search.getDateadded(),pageable);
+        else if(search.getLogin()== null && search.getNom()!= null && search.getRole() == null && search.getDateadded()!= null)  return userRepository.findByAllNomDate(search.getNom(),search.getDateadded(),pageable);
 
-        else if(search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() != null && !search.getDateadded().isEmpty())  return userRepository.findByAllRoleDate( search.getRole(), search.getDateadded(),pageable);
+        else if(search.getLogin()== null && search.getNom()== null && search.getRole() != null && search.getDateadded()!= null)  return userRepository.findByAllRoleDate( search.getRole(), search.getDateadded(),pageable);
 
-        else if(!search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() == null && search.getDateadded().isEmpty())  return userRepository.findByAllEmail( search.getLogin(),pageable);
+        else if(search.getLogin()!= null && search.getNom()== null && search.getRole() == null && search.getDateadded()== null)  return userRepository.findByAllEmail( search.getLogin(),pageable);
 
-        else if(search.getLogin().isEmpty() && !search.getNom().isEmpty() && search.getRole() == null && search.getDateadded().isEmpty())  return userRepository.findByAllNom( search.getNom(),pageable);
+        else if(search.getLogin()== null && search.getNom()!= null && search.getRole() == null && search.getDateadded()== null)  return userRepository.findByAllNom( search.getNom(),pageable);
 
-        else if(search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() != null && search.getDateadded().isEmpty())  return userRepository.findByAllRole( search.getRole(),pageable);
+        else if(search.getLogin()== null && search.getNom()== null && search.getRole() != null && search.getDateadded()== null)  return userRepository.findByAllRole( search.getRole(),pageable);
 
-        else if(search.getLogin().isEmpty() && search.getNom().isEmpty() && search.getRole() == null && !search.getDateadded().isEmpty())  return userRepository.findByAllDate( search.getDateadded(),pageable);
+        else if(search.getLogin()== null && search.getNom()== null && search.getRole() == null && search.getDateadded()!= null)  return userRepository.findByAllDate( search.getDateadded(),pageable);
 
         else return userRepository.findAll(pageable);
     }
