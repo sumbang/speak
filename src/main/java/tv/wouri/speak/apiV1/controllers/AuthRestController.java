@@ -217,15 +217,14 @@ public class AuthRestController {
 
     @PostMapping (value = "/check-token", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> tokenIsValid(@RequestBody TokenExist tokenExist) {
-        User user = userService.findByAuthToken(tokenExist.getToken());
+
         TokenExistResponse tokenExistResponse = new TokenExistResponse();
-        if(user  == null) {
-            tokenExistResponse.setResult(false);
-            return new ResponseEntity<>(tokenExistResponse, HttpStatus.NOT_FOUND);
-        }
-        else {
+        if(jwtUtils.validateJwtToken(tokenExist.getToken())) {
             tokenExistResponse.setResult(true);
             return new ResponseEntity<>(tokenExistResponse, HttpStatus.OK);
+        } else {
+            tokenExistResponse.setResult(false);
+            return new ResponseEntity<>(tokenExistResponse, HttpStatus.NOT_FOUND);
         }
 
     }
