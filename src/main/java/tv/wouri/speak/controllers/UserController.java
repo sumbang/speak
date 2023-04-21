@@ -51,11 +51,14 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, page.getTotalPages());
 
+        List<Role> roles = roleService.getAll();
+
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("search", new UserSearch());
         model.addAttribute("currentIndex", current);
+        model.addAttribute("roles", roles);
 
         return "user/list";
 
@@ -79,11 +82,15 @@ public class UserController {
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, page.getTotalPages());
 
+
+        List<Role> roles = roleService.getAll();
+
         model.addAttribute("list", page);
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
         model.addAttribute("currentIndex", current);
         model.addAttribute("search", search);
+        model.addAttribute("roles", roles);
 
         return "user/search";
 

@@ -56,7 +56,7 @@ public interface EnfantRepository extends JpaRepository<Enfant, Long> {
     @Query(value = "select * from enfant where user = ?2 and sexe = ?2", nativeQuery = true)
     Page<Enfant> findByAllParentSexe (Long parent, String sexe, Pageable pageable);
 
-    @Query(value = "select * from enfant where and datnaiss like %?1% and sexe = ?2", nativeQuery = true)
+    @Query(value = "select * from enfant where datnaiss like %?1% and sexe = ?2", nativeQuery = true)
     Page<Enfant> findByAllSexeDate (String datnaiss, String sexe, Pageable pageable);
 
     @Query(value = "select * from enfant ", nativeQuery = true)
