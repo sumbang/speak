@@ -33,4 +33,8 @@ public class EcouteService extends AbstractService<Ecoute, Long> {
     public void deleteByEnfantAudio(Long enfant,Long audio){
         ecouteRepository.deleteByEnfantAudio(enfant,audio);
     }
+
+    public List<Ecoute> findByAudio(Long audio) {
+        return ecouteRepository.findByAudio(audio);
+    }
 }

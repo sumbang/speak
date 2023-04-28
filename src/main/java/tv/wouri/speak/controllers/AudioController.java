@@ -22,12 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tv.wouri.speak.config.Setting;
 import tv.wouri.speak.models.Audio;
 import tv.wouri.speak.models.Categorie;
+import tv.wouri.speak.models.Ecoute;
 import tv.wouri.speak.models.Langue;
 import tv.wouri.speak.search.AudioSearch;
-import tv.wouri.speak.service.AudioService;
-import tv.wouri.speak.service.CategorieService;
-import tv.wouri.speak.service.FilesStorageService;
-import tv.wouri.speak.service.LangueService;
+import tv.wouri.speak.service.*;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -48,6 +46,8 @@ public class AudioController {
     private CategorieService categorieService;
     @Autowired
     FilesStorageService storageService;
+    @Autowired
+    private EcouteService ecouteService;
 
     @GetMapping
     public String index() {
@@ -175,12 +175,20 @@ public class AudioController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, final RedirectAttributes ra) {
-        File file = new File(root.getFileName()+"/"+audioService.get(id).getFilename());
-        FileSystemUtils.deleteRecursively(file);
-        audioService.delete(id);
-        ra.addFlashAttribute("successFlash", "Opération réussie.");
-        return "redirect:/audio/1";
 
+        List<Ecoute> ecoutes = ecouteService.findByAudio(id);
+
+        if(ecoutes.size() == 0) {
+            File file = new File(root.getFileName()+"/"+audioService.get(id).getFilename());
+            FileSystemUtils.deleteRecursively(file);
+            audioService.delete(id);
+            ra.addFlashAttribute("successFlash", "Opération réussie.");
+        }
+
+        else {
+            ra.addFlashAttribute("errorFlash", "Des écoutes ont été faites pour cet audio, pas possible de le supprimer");
+        }
+        return "redirect:/audio/1";
     }
 
     @GetMapping("/uploads/{filename:.+}")

@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Catégories</title>
+    <title>Langues</title>
 </head>
 <body>
 <section layout:fragment="header">
-    <h1>Catégories</h1>
+    <h1>Langues</h1>
 <ol class="breadcrumb">
     <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li class="active">Catégories</li>
+    <li class="active">Langues</li>
 </ol>
 </section>
 <div layout:fragment="content">
@@ -26,27 +26,25 @@
                 <tr>
                     <th>ID</th>
                     <th>Libellé</th>
-                    <th>Registration Date</th>
                     <th>Action</th>
                 </tr>
                 <tr th:each="row : ${list}">
                     <td th:text="${row.id}"></td>
                     <td th:text="${row.libelle}"></td>
-                    <td th:text="${#dates.format(row.addedDate, 'dd/MM/yyyy')}"></td>
                     <td>
-                        <a th:href="@{'/categorie/edit/' + ${row.id}}">Edit</a> |
-                        <a th:href="@{'/categorie/delete/' + ${row.id}}">Delete</a>
+                        <a th:href="@{'/langue/edit/' + ${row.id}}">Edit</a> |
+                        <a th:href="@{'/langue/delete/' + ${row.id}}">Delete</a>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="box-footer clearfix">
             <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="/categorie/1">First</a></li>
+                <li><a href="/langue/1">First</a></li>
                 <li th:each="p : ${#numbers.sequence(1, endIndex/beginIndex)}" th:class="${p == currentIndex} ? 'active' : ''">
-                    <a th:href="@{'/categorie/' + ${p}}" th:text="${p}"></a>
+                    <a th:href="@{'/langue/' + ${p}}" th:text="${p}"></a>
                 </li>
-                <li><a th:href="@{'/categorie/' + ${endIndex}}">Last</a></li>
+                <li><a th:href="@{'/langue/' + ${endIndex}}">Last</a></li>
             </ul>
         </div>
     </div>
