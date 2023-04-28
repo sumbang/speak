@@ -4,6 +4,20 @@
     <ul class="sidebar-menu" data-widget="tree">
         <!-- <li class="header"></li> -->
         <li><a th:href="@{/}"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a></li>
+
+
+        <li class="treeview">
+            <a href="#"><i class="fa fa-language"></i> <span>Gestion des langues</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a th:href="@{/langue}"><i class="fa fa-circle-o"></i> Toutes les langues</a></li>
+                <li><a th:href="@{/langue/add}"><i class="fa fa-circle-o"></i> Ajouter un langue</a></li>
+            </ul>
+        </li>
+
         <li class="treeview">
             <a href="#"><i class="fa fa-list"></i> <span>Gestion des catégories</span>
                 <span class="pull-right-container">
