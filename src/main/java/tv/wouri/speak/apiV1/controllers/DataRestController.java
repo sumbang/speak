@@ -109,6 +109,7 @@ public class DataRestController {
         }
 
     }
+
     @GetMapping(value = "/enfants", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeEnfants()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -140,6 +141,7 @@ public class DataRestController {
 
         return new ResponseEntity<>(accessList, HttpStatus.OK);
     }
+
     @GetMapping(value = "/langues", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeLangues()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -148,6 +150,7 @@ public class DataRestController {
         List<Langue> langueList = langueService.getAll();
         return new ResponseEntity<>(langueList, HttpStatus.OK);
     }
+
     @GetMapping(value = "/sexes", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> listeSexes()  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -158,6 +161,7 @@ public class DataRestController {
         sexeList.add(new Sexe("M","Garçon"));
         return new ResponseEntity<>(sexeList, HttpStatus.OK);
     }
+
     @PostMapping(value = "/enfant", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> addEnfant(@RequestBody Child child)  throws Exception {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -186,6 +190,7 @@ public class DataRestController {
             return new ResponseEntity<>(new MessageResponse("Opération réussie"), HttpStatus.OK);
         }
     }
+
     @PutMapping(value = "/enfant/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> editEnfant(@PathVariable("id") String id,@RequestBody Child child)  throws Exception  {
 
