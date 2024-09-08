@@ -69,31 +69,6 @@ public class DataRestController {
             return new ResponseEntity<>(new MessageResponse("Code d'activation incorrect"), HttpStatus.BAD_REQUEST);
         }
 
-       /* else if(result > 0) {
-
-            String ret = "Votre code d'activation est expiré, un nouveau code viens de vous être envoyé par mail. "+dateFormat.format(date1)+ " et "+dateFormat1.format(user.getActiveTokenExpirationDate());
-
-            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
-            LocalDateTime localDate1 = LocalDateTime.now().plusHours(Setting.TOKEN_ACTIVATION_TIME);
-            String dat = dtf.format(localDate);
-            Date dat2 =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dat);
-
-            String token = Setting.randomString(8);
-            user.setActiveToken(token);
-            user.setActiveTokenExpirationDate(date1);
-            userService.save(user);
-
-            EmailDetails emailDetails = new EmailDetails();
-            emailDetails.setRecipient(user.getLogin());
-            emailDetails.setSubject("Activation de votre compte");
-            emailDetails.setMsgBody("Bonjour "+user.getNom()+" "+user.getPrenom()+",\n\rVous venez de créer un compte sur <b>"+ Setting.appName +"</b>.\n\rAfin de le rendre actif, veuillez renseigner ce code à votre première connexion : "+token+" \n\rCordialement");
-
-            String retour = emailService.sendSimpleMail(emailDetails);
-
-            return new ResponseEntity<>(new MessageResponse(ret), HttpStatus.BAD_REQUEST);
-
-        } */
-
         else {
             DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
             LocalDateTime localDate1 = LocalDateTime.now();
@@ -125,7 +100,13 @@ public class DataRestController {
         String jour = formatDate.format(new Date());
 
         enfantList.forEach(enfant -> {
-           List<MyAbonnement> myAbonnements = myAbonnementService.findByChild(user.getId(),jour);
+
+            Access access = new Access();
+            access.setEnfant(enfant);
+            access.setAcces(true);
+            accessList.add(access);
+
+            /*List<MyAbonnement> myAbonnements = myAbonnementService.findByChild(user.getId(),jour);
             if(myAbonnements.size() != 0) {
                 Access access = new Access();
                 access.setEnfant(enfant);
@@ -136,7 +117,7 @@ public class DataRestController {
                 access.setEnfant(enfant);
                 access.setAcces(false);
                 accessList.add(access);
-            }
+            } */
         });
 
         return new ResponseEntity<>(accessList, HttpStatus.OK);
