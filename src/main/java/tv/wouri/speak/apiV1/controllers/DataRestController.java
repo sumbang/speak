@@ -442,6 +442,37 @@ public class DataRestController {
 
     }
 
+    @GetMapping(value = "/delete", produces = Setting.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> delete()  throws Exception {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        User user = userService.findByLogin(userDetails.getUsername());
+
+        String nom = user.getNom()+" "+user.getPrenom();
+        String email = user.getLogin();
+        user.setDeleted(1);
+        user.setLogin("XXXX");
+        user.setNom("XXXX");
+        user.setPrenom("XXXX");
+        userService.save(user);
+
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setRecipient(email);
+        emailDetails.setSubject("Suppression de votre compte");
+        emailDetails.setMsgBody("Bonjour "+nom+",\n\rVous venez de supprimer votre compte sur <b>"+ Setting.appName +"</b>.\n\rTout votre historique ainsi que les informations que vous avez ajoutées ne sont plus disponibles. \n\rPour de nouveau utiliser Bantou, vous devrez créer un nouveau compte. \n\rCordialement");
+
+        String retour = emailService.sendSimpleMail(emailDetails);
+
+        if(retour.equals("Error while Sending Mail")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Impossible d'envoyer le mail de suppression"));
+        }
+
+        else {return new ResponseEntity<>(new MessageResponse("Opération réussie"), HttpStatus.OK);  }
+
+
+    }
+
 
 
 }

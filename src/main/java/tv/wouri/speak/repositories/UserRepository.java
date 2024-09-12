@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select * from user where login = ?1", nativeQuery = true)
+    @Query(value = "select * from user where login = ?1 and deleted = 0", nativeQuery = true)
     User findByLogin (String username);
 
     @Query(value = "select * from user where reset_token = ?1", nativeQuery = true)

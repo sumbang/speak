@@ -33,6 +33,7 @@ public class User  extends AbstractModel<Long>  {
     private String resetToken;
     private String authToken;
     private Boolean activated;
+    private int deleted;
     private String activeToken;
     @ManyToOne
     @JoinColumn(name = "role_id_role")
