@@ -237,7 +237,7 @@ public class DataRestController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User user = userService.findByLogin(userDetails.getUsername());
-        List<Categorie> categories = categorieService.getAll();
+        List<Categorie> categories = categorieService.findById();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
     @GetMapping(value = "/audios-categorie/{id}", produces = Setting.APPLICATION_JSON_UTF8_VALUE)

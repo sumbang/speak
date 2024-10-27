@@ -8,6 +8,8 @@ import tv.wouri.speak.models.Categorie;
 import tv.wouri.speak.repositories.AbonnementRepository;
 import tv.wouri.speak.repositories.CategorieRepository;
 
+import java.util.List;
+
 @Service
 public class CategorieService extends AbstractService<Categorie, Long> {
 
@@ -17,5 +19,9 @@ public class CategorieService extends AbstractService<Categorie, Long> {
     @Override
     protected JpaRepository<Categorie, Long> getRepository() {
         return categorieRepository;
+    }
+
+    public List<Categorie> findById() {
+        return categorieRepository.findById();
     }
 }
